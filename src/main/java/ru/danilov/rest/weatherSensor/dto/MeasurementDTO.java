@@ -3,15 +3,19 @@ package ru.danilov.rest.weatherSensor.dto;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import ru.danilov.rest.weatherSensor.model.Sensor;
 
 public class MeasurementDTO {
-    @NotEmpty(message = "Value must not be empty")
+    @NotNull
     @Min(value = -100, message = "min value = -100")
     @Max(value = 100, message = "max value = 100")
     private Double value;
 
-    @NotEmpty(message = "Raining must not be empty")
-    private String raining;
+    @NotNull
+    private String isRaining;
+    @NotNull
+    private Sensor sensor;
 
     public Double getValue() {
         return value;
@@ -21,11 +25,19 @@ public class MeasurementDTO {
         this.value = value;
     }
 
-    public String getRaining() {
-        return raining;
+    public String isRaining() {
+        return isRaining;
     }
 
     public void setRaining(String raining) {
-        this.raining = raining;
+        this.isRaining = raining;
+    }
+
+    public Sensor getSensor() {
+        return sensor;
+    }
+
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
     }
 }
