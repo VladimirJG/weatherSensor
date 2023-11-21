@@ -5,16 +5,19 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.danilov.rest.weatherSensor.dto.SensorDTO;
+import ru.danilov.rest.weatherSensor.exceptions.ErrorResponse;
 import ru.danilov.rest.weatherSensor.exceptions.SensorNotCreatedException;
+import ru.danilov.rest.weatherSensor.exceptions.SensorNotFoundException;
 import ru.danilov.rest.weatherSensor.model.Sensor;
 import ru.danilov.rest.weatherSensor.services.SensorService;
 import ru.danilov.rest.weatherSensor.util.SensorValidator;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static ru.danilov.rest.weatherSensor.util.ErrorsUtil.returnErrorsToClient;
 
 @RestController
 @RequestMapping("/sensor")
@@ -41,21 +44,12 @@ public class SensorController {
         return sensorService.getSensor(id);
     }
 
-    @PostMapping()
+    @PostMapping("/registration")
     public ResponseEntity<HttpStatus> createSensor(@RequestBody @Valid SensorDTO sensorDTO, BindingResult bindingResult) {
         Sensor sensor = convertToSensor(sensorDTO);
         sensorValidator.validate(sensor, bindingResult);
         if (bindingResult.hasErrors()) {
-            StringBuilder errorMsg = new StringBuilder();
-
-            List<FieldError> errors = bindingResult.getFieldErrors();
-            for (FieldError error : errors) {
-                errorMsg.append(error.getField())
-                        .append(" - ")
-                        .append(error.getDefaultMessage())
-                        .append(";");
-            }
-            throw new SensorNotCreatedException(errorMsg.toString());
+            returnErrorsToClient(bindingResult);
         }
         sensorService.save(sensor);
         return ResponseEntity.ok(HttpStatus.OK);
@@ -81,5 +75,23 @@ public class SensorController {
 
     private SensorDTO convertToSensorDTO(Sensor sensor) {
         return modelMapper.map(sensor, SensorDTO.class);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<ErrorResponse> handleException(SensorNotFoundException e) {
+        ErrorResponse response = new ErrorResponse(
+                "Sensor with this id wasn`t found",
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<ErrorResponse> handleException(SensorNotCreatedException e) {
+        ErrorResponse response = new ErrorResponse(
+                e.getMessage(),
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
