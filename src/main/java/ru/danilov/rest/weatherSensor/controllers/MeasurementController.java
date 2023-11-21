@@ -37,7 +37,7 @@ public class MeasurementController {
                 .map(this::convertToMeasurementDTO).collect(Collectors.toList()));
     }
 
-    @PatchMapping("/add")
+    @PostMapping("/add")
     public ResponseEntity<HttpStatus> add(@RequestBody @Valid MeasurementDTO measurementDTO, BindingResult bindingResult) {
         Measurement measurementToAdd = convertToMeasurement(measurementDTO);
         measurementValidator.validate(measurementToAdd, bindingResult);

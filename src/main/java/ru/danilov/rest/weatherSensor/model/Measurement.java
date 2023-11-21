@@ -3,7 +3,6 @@ package ru.danilov.rest.weatherSensor.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.lang.NonNull;
 
@@ -17,12 +16,12 @@ public class Measurement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "value")
-    @NonNull
+    @NotNull
     @Min(value = -100, message = "min value = -100")
     @Max(value = 100, message = "max value = 100")
     private Double value;
     @Column(name = "raining")
-    @NonNull
+    @NotNull
     private Boolean raining;
     @NotNull
     @ManyToOne

@@ -8,7 +8,6 @@ import ru.danilov.rest.weatherSensor.repositories.MeasurementRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
