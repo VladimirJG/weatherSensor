@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.lang.NonNull;
 
 import java.time.LocalDateTime;
 
@@ -13,59 +15,54 @@ public class Measurement {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @Column(name = "value")
-    @NotEmpty(message = "Value must not be empty")
+    @NonNull
     @Min(value = -100, message = "min value = -100")
     @Max(value = 100, message = "max value = 100")
-    private double value;
+    private Double value;
     @Column(name = "raining")
-    @NotEmpty(message = "Raining must not be empty")
-    private String raining;
+    @NonNull
+    private Boolean raining;
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "sensor_id",  referencedColumnName = "id")
-    private Sensor sensorOwner;
+    @JoinColumn(name = "sensor", referencedColumnName = "name")
+    private Sensor sensor;
     @Column(name = "time_of_creation")
     private LocalDateTime timeOfCreation;
 
-    public Measurement() {
-    }
-
-    public Measurement(double value, String raining) {
-        this.value = value;
-        this.raining = raining;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public double getValue() {
+    @NonNull
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(@NonNull Double value) {
         this.value = value;
     }
 
-    public String getRaining() {
+    @NonNull
+    public Boolean getRaining() {
         return raining;
     }
 
-    public void setRaining(String raining) {
+    public void setRaining(@NonNull Boolean raining) {
         this.raining = raining;
     }
 
-    public Sensor getSensorOwner() {
-        return sensorOwner;
+    public Sensor getSensor() {
+        return sensor;
     }
 
-    public void setSensorOwner(Sensor sensorOwner) {
-        this.sensorOwner = sensorOwner;
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
     }
 
     public LocalDateTime getTimeOfCreation() {
