@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.danilov.rest.weatherSensor.model.Measurement;
 import ru.danilov.rest.weatherSensor.repositories.MeasurementRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +30,7 @@ public class MeasurementService {
 
     @Transactional
     public void saveMeasurement(Measurement measurement) {
+        measurement.setTimeOfCreation(LocalDateTime.now());
         measurementRepository.save(measurement);
     }
 
