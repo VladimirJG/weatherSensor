@@ -49,7 +49,7 @@ public class Measurement {
     }
 
     @NonNull
-    public Boolean getRaining() {
+    public Boolean isRaining() {
         return raining;
     }
 

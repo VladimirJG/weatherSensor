@@ -8,16 +8,16 @@ public class MeasurementDTO {
     @NotEmpty(message = "Value must not be empty")
     @Min(value = -100, message = "min value = -100")
     @Max(value = 100, message = "max value = 100")
-    private double value;
+    private Double value;
 
     @NotEmpty(message = "Raining must not be empty")
     private String raining;
 
-    public double getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 
