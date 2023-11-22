@@ -13,3 +13,5 @@ create table Measurement
     sensor varchar(100) references Sensor(name)on delete set null
 );
 
+truncate table Measurement;
+truncate table Sensor cascade;
